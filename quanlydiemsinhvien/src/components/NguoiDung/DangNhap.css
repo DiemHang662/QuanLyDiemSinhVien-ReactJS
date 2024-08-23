@@ -1,59 +1,59 @@
-.body-login {
-    background-color: #87CEEB; /* Màu xanh cho nền màn hình */
-    font-family: Arial, sans-serif; /* Font chữ */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .login-container {
-    background-color: white; /* Màu nền của form */
-    padding: 20px;
-    border-radius: 8px; /* Bo tròn góc của form */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho form */
-    width: 350px; /* Chiều rộng của form */
-  }
-  
-  .login-container h2 {
-    margin-top: 0;
-    text-align: center;
-  }
-  
-  .login-container div {
-    margin-bottom: 15px;
-  }
-  
-  .login-container label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .login-container input,
-  .login-container select {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .login-container button {
-    background-color: #4CAF50; /* Màu nền của nút */
-    color: white; /* Màu chữ của nút */
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .login-container button:hover {
-    background-color: #45a049; /* Màu nền khi di chuột qua nút */
-  }
-  
-  .login-container p.error {
-    color: red; /* Màu của thông báo lỗi */
-  }
-  
+h3{
+  color:#007BFF;
+}
+
+.login-container {
+  margin-top: 50px;
+}
+
+.login-form {
+  background-color: #f1f8ff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  color: black;
+  margin-left:20px;
+}
+
+.form-group input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #007BFF;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.login-button {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  margin-top: 15px;
+}
+
+.token-container {
+  margin-top: 20px;
+}
+
+.token {
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 5px;
+  word-wrap: break-word;
+}

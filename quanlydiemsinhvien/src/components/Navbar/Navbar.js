@@ -16,26 +16,25 @@ const NavbarComponent = () => {
   };
 
   return (
-    <Navbar className="navbar-custom navbar-expand-lg bg-secondary">
+    <Navbar className="navbar-custom navbar-expand-lg bg-primary">
       <Container fluid>
-        <Navbar.Brand as={Link} to="/">QUẢN LÝ ĐIỂM SINH VIÊN</Navbar.Brand>
+        <Navbar.Brand className="title" as={Link} to="/">QUẢN LÝ ĐIỂM SINH VIÊN</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Trang chủ</Nav.Link>
-            <Nav.Link as={Link} to="/sinhvien">Sinh viên</Nav.Link>
-            <Nav.Link as={Link} to="/lophoc">Lớp học</Nav.Link>
+            {/* <Nav.Link as={Link} to="/sinhvien">Sinh viên</Nav.Link>
+            <Nav.Link as={Link} to="/lophoc">Lớp học</Nav.Link> */}
             <Nav.Link as={Link} to="/monhoc">Môn học</Nav.Link>
             <NavDropdown title="Điểm" id="basic-nav-dropdown" align="end">
               <NavDropdown.Item as={Link} to="/diemGK-CK">Xem điểm giữa kỳ</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/diemGK-CK">Xem điểm cuối kỳ</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/diemTB">Xem điểm trung bình</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/bctk">Báo cáo thống kê</NavDropdown.Item>
             </NavDropdown>
             {user ? (
               <>
                 <Nav.Link as={Button} variant="link" onClick={handleLogout}>Đăng xuất</Nav.Link>
-                <span className="navbar-text text-white ms-2">Xin chào, {user.name}</span>
+                <span className="navbar-text text-white ms-2"style={{ fontWeight: 'bold' }}>Xin chào, {user.name}</span>
               </>
             ) : (
               <Nav.Link as={Link} to="/login">Đăng nhập</Nav.Link>
