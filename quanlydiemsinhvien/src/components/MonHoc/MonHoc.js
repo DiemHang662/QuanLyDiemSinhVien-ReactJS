@@ -1,37 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom';
+import { authApi, endpoints } from '../../configs/API'; // Import endpoints and authApi from API config
 
 const MonHocList = () => {
     const [monHocs, setMonHocs] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userId, setUserId] = useState(null); // State to store user ID
     const navigate = useNavigate(); // Get the navigate function
 
     useEffect(() => {
         const loadMonHocs = async () => {
             setLoading(true);
             try {
-                // Hardcoded user ID and token for testing purposes
-                const userId = '1'; // Replace with the hardcoded user ID
-                const token = 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjQ1MjA2OTQsInVzZXJuYW1lIjoic3YxIn0.engzbsIpqVUne-4fIN-cNhvvCeXLDz1Fi6-AwDpRzpk';
+                // Fetch current user details
+                const currentUserResponse = await authApi().get(endpoints.currentUser);
+                if (currentUserResponse.status === 200) {
+                    const currentUser = currentUserResponse.data;
+                    setUserId(currentUser.id); // Set the user ID from current user response
 
-                const response = await fetch(`http://localhost:8080/QuanLyDiemSinhVien/api/monhoc/list?sinhVienId=${userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Include token directly in the request header
-                    },
-                });
+                    // Fetch subjects using user ID
+                    const monHocResponse = await authApi().get(`${endpoints.monHoc}?sinhVienId=${currentUser.id}`);
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    setMonHocs(data); // Update only if data is an array
+                    if (monHocResponse.status === 200) {
+                        const data = monHocResponse.data;
+                        if (Array.isArray(data)) {
+                            setMonHocs(data); // Update only if data is an array
+                        } else {
+                            throw new Error('Invalid data format');
+                        }
+                    } else {
+                        throw new Error(`Server responded with status ${monHocResponse.status}`);
+                    }
                 } else {
-                    throw new Error('Invalid data format');
+                    throw new Error('Failed to fetch current user details');
                 }
             } catch (error) {
                 setError(error.message || 'Failed to fetch subjects');
@@ -42,7 +44,7 @@ const MonHocList = () => {
         };
 
         loadMonHocs();
-    }, []); // No dependency on `user`, as ID and token are hardcoded
+    }, []); // No dependencies, runs once on component mount
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -66,7 +68,7 @@ const MonHocList = () => {
                     <p>No subjects found.</p>
                 )}
             </div>
-            <button onClick={() => navigate('/dssv')} className="btn btn-primary">Trở Về</button>
+            <button onClick={() => navigate('/')} className="btn btn-primary">Trở Về</button>
         </div>
     );
 };

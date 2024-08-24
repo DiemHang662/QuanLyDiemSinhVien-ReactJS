@@ -22,9 +22,9 @@ const AverageScore = () => {
             // Make the API request
             const response = await axios.get(`http://localhost:8080/QuanLyDiemSinhVien/api/diem/average-score-bySV`, {
                 params: {
-                    sinhVienId: 1,
-                    monHocId: 1,
-                    lopHocId: 1,
+                    sinhVienId: sinhVienId,
+                    monHocId: monHocId,
+                    lopHocId: lopHocId,
                 },
                 headers: {
                     'Authorization': `Bearer ${token}`,
