@@ -30,6 +30,7 @@ const NavbarComponent = () => {
                 <Nav.Link as={Link} to="/sinhvien">Sinh viên</Nav.Link>
                 <Nav.Link as={Link} to="/lophoc">Lớp học</Nav.Link>
                 <Nav.Link as={Link} to="/monhoc">Môn học</Nav.Link>
+                <Nav.Link as={Link} to="/chat">Trò chuyện</Nav.Link> 
               </>
             )}
             
@@ -37,19 +38,20 @@ const NavbarComponent = () => {
             {user && user.userRole === 'ROLE_SINHVIEN' && (
               <>
                 <Nav.Link as={Link} to="/monhoc">Môn học</Nav.Link>
-                <NavDropdown title="Điểm" id="basic-nav-dropdown" align="end">
+                {/* <NavDropdown title="Điểm" id="basic-nav-dropdown" align="end">
                   <NavDropdown.Item as={Link} to="/diemTB">Xem điểm trung bình</NavDropdown.Item>
-                </NavDropdown>
+                </NavDropdown> */}
+                <Nav.Link as={Link} to="/chat"> Trò chuyện</Nav.Link> 
               </>
             )}
             
             {/* Display logout and user info if user is logged in */}
             {user && (
               <>
-                <Nav.Link as={Button} variant="link" onClick={handleLogout}>Đăng xuất</Nav.Link>
-                <span className="navbar-text text-white ms-2" style={{ fontWeight: 'bold' }}>
-                  Xin chào, {user.name} {/* Display user's name */}
-                </span>
+                 <NavDropdown title={<img src={user.avatar} alt="Avatar" className="img-avatar" />} id="user-dropdown" align="end" >
+                  <NavDropdown.Item>Thông tin cá nhân</NavDropdown.Item>
+                  <NavDropdown.Item as={Button} varianr="link" onClick={handleLogout} >Đăng xuất</NavDropdown.Item>
+                </NavDropdown>
               </>
             )}
             

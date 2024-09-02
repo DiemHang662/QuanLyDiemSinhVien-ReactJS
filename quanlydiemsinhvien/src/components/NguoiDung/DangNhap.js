@@ -1,47 +1,40 @@
 import React, { useState, useContext } from 'react';
 import { authApi, endpoints } from '../../configs/API';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { MyDispatchContext } from '../../configs/Contexts';
-import './DangNhap.css'; 
+import './DangNhap.css';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('ROLE_SINHVIEN'); // Default role
   const [error, setError] = useState('');
-  const navigate = useNavigate(); 
-  const dispatch = useContext(MyDispatchContext); 
+  const navigate = useNavigate();
+  const dispatch = useContext(MyDispatchContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Send the username, password, and userRole to the login endpoint
       const authResponse = await authApi().post(endpoints.dangNhap, {
         username,
         password,
         userRole: role
       });
 
-      // Log the response for debugging
       console.log('Auth Response:', authResponse);
 
-      // Directly get the token from the response data
       const token = authResponse.data;
 
       if (token) {
-        // Store the token in local storage
         localStorage.setItem('access_token', token);
 
-        // Fetch current user details using the token
         const userResponse = await authApi().get(endpoints.currentUser);
 
-        // Check if the response is JSON
         if (userResponse.headers['content-type'].includes('application/json')) {
           const currentUser = userResponse.data;
           console.log('Current User Data:', currentUser);
 
-          // Dispatch user login information
           dispatch({
             type: 'login',
             payload: currentUser,
@@ -73,6 +66,7 @@ function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            placeholder="Nhập tên người dùng"
           />
         </div>
         <div className="form-group">
@@ -83,6 +77,7 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Nhập mật khẩu"
           />
         </div>
         <div className="form-group">
@@ -98,7 +93,7 @@ function Login() {
             <option value="ROLE_GIAOVU">Giáo vụ</option>
           </select>
         </div>
-        <div>
+        <div className="form-actions">
           <button type="submit" className="login-button">Đăng nhập</button>
           {error && <p className="error-message">{error}</p>}
         </div>
