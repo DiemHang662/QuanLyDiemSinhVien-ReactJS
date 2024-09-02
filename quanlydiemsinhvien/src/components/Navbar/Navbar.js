@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Navbar, Container, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { MyDispatchContext, MyUserContext } from '../../App'; // Adjusted path
-import './Navbar.css'; // Ensure this file exists and contains necessary styles
+import { MyDispatchContext, MyUserContext } from '../../configs/Contexts';
+import './Navbar.css'; 
 
 const NavbarComponent = () => {
   const user = useContext(MyUserContext); // Get user info from context
@@ -11,7 +11,6 @@ const NavbarComponent = () => {
 
   // Handle user logout
   const handleLogout = () => {
-    localStorage.removeItem('access_token'); // Remove token from localStorage
     dispatch({ type: 'logout' }); // Dispatch logout action
     navigate('/login'); // Redirect to login page
   };
@@ -48,7 +47,9 @@ const NavbarComponent = () => {
             {user && (
               <>
                 <Nav.Link as={Button} variant="link" onClick={handleLogout}>Đăng xuất</Nav.Link>
-                <span className="navbar-text text-white ms-2" style={{ fontWeight: 'bold' }}>Xin chào, {user.name}</span>
+                <span className="navbar-text text-white ms-2" style={{ fontWeight: 'bold' }}>
+                  Xin chào, {user.name} {/* Display user's name */}
+                </span>
               </>
             )}
             

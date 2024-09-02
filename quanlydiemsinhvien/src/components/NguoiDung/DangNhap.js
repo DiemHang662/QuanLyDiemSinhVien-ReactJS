@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { authApi, endpoints } from '../../configs/API';
 import { useNavigate } from 'react-router-dom'; 
-import { MyDispatchContext } from '../../App'; 
+import { MyDispatchContext } from '../../configs/Contexts';
 import './DangNhap.css'; 
 
 function Login() {
@@ -23,30 +23,41 @@ function Login() {
         userRole: role
       });
 
-      const { token, userRole } = authResponse.data;
+      // Log the response for debugging
+      console.log('Auth Response:', authResponse);
 
-      // Store the token in local storage
-      localStorage.setItem('access_token', token);
+      // Directly get the token from the response data
+      const token = authResponse.data;
 
-      // Fetch current user details using the token
-      const userResponse = await authApi().get(endpoints.currentUser, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      if (token) {
+        // Store the token in local storage
+        localStorage.setItem('access_token', token);
+
+        // Fetch current user details using the token
+        const userResponse = await authApi().get(endpoints.currentUser);
+
+        // Check if the response is JSON
+        if (userResponse.headers['content-type'].includes('application/json')) {
+          const currentUser = userResponse.data;
+          console.log('Current User Data:', currentUser);
+
+          // Dispatch user login information
+          dispatch({
+            type: 'login',
+            payload: currentUser,
+          });
+
+          setError('');
+          navigate('/'); // Navigate to the homepage or dashboard
+        } else {
+          throw new Error('Unexpected response format from currentUser endpoint');
         }
-      });
-  
-      const currentUser = userResponse.data;
-      console.log('Current User Data:', currentUser); // Log the current user data
-
-      // Dispatch user login information
-      dispatch({ type: 'login', payload: { name: username, userRole: userRole || role } }); 
-      setError('');
-      navigate('/'); // Navigate to the homepage or dashboard
+      } else {
+        throw new Error('Token is missing from the response');
+      }
     } catch (error) {
-      // Handle error properly
       console.error('Login error:', error);
-      setError('Invalid username, password, or role'); // Consider different messages for different errors
+      setError('Invalid username, password, or role');
     }
   };
 
@@ -55,8 +66,9 @@ function Login() {
       <form onSubmit={handleSubmit} className="login-form">
         <h3>ĐĂNG NHẬP NGƯỜI DÙNG</h3>
         <div className="form-group">
-          <label>Tên người dùng:</label>
+          <label htmlFor="username">Tên người dùng:</label>
           <input
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -64,8 +76,9 @@ function Login() {
           />
         </div>
         <div className="form-group">
-          <label>Mật khẩu:</label>
+          <label htmlFor="password">Mật khẩu:</label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -73,8 +86,13 @@ function Login() {
           />
         </div>
         <div className="form-group">
-          <label>Chọn vai trò:</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)} required>
+          <label htmlFor="role">Chọn vai trò:</label>
+          <select
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+          >
             <option value="ROLE_SINHVIEN">Sinh viên</option>
             <option value="ROLE_GIANGVIEN">Giảng viên</option>
             <option value="ROLE_GIAOVU">Giáo vụ</option>
