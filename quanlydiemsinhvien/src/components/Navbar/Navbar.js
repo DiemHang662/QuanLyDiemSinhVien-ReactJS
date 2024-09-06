@@ -48,7 +48,10 @@ const NavbarComponent = () => {
             {/* Display logout and user info if user is logged in */}
             {user && (
               <>
-                 <NavDropdown title={<img src={user.avatar} alt="Avatar" className="img-avatar" />} id="user-dropdown" align="end" >
+                  <NavDropdown title={ user.avatar ? ( <img src={user.avatar} alt="Avatar" className="img-avatar" />
+                ) : (
+                    <span>{user.username}</span>
+                )} id="user-dropdown"  align="end"   >
                   <NavDropdown.Item>Thông tin cá nhân</NavDropdown.Item>
                   <NavDropdown.Item as={Button} varianr="link" onClick={handleLogout} >Đăng xuất</NavDropdown.Item>
                 </NavDropdown>

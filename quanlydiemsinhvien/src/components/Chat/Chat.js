@@ -42,7 +42,7 @@ const Chat = () => {
                 try {
                     await addDoc(collection(db, 'messages'), {
                         text: newMessage,
-                        user: user.name || 'Anonymous',
+                        user: user.name || `Giảng viên ${user.username}`,
                         createdAt: Timestamp.fromDate(new Date()),
                     });
                     setNewMessage('');
